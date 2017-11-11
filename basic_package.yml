@@ -2,29 +2,33 @@
  
  # ansible playbook to install my dev machine
 
-- name: install packages on a fresh Ubuntu
-  hosts: local
-  user: "{{ username }}"
+- name: "install external apps"
+  hosts: localhost
   sudo: yes
- 
+  roles:
+     - { role: theNewFlesh.sublime }
+     - { role: henriklynggaard.clion }
+     - { role: gantsign.gitkraken }
+     
+
+
+- name: "install using apt"
+  hosts: localhost
   tasks:
-    - name: install all packages
-    apt: name={{ item }} state=present
-    with_items:
-    - curl
-    - gcc
-    # - google-chrome-stable
-    # - openssh-server
-    # - python-apport
-    # - python-lockfile
-    # - python-requests
-    # - ubuntu-restricted-extras
-    #- virtualbox
-    # - clion
-    # - gitkraken
+   - apt: name={{ item }} state=present
+     with_items:
+       - curl
+       - gcc
+       - python-apport
+       - python-lockfile
+       - python-requests
+       - ubuntu-restricted-extras
+       - cgdb
+       - iftop
+       - htop
 
 
-# - name: Install Dotfiles
-#       git: >
-#         repo=git@github.com/beberlei/vim-dotfiles.git
-#         dest=/home/${ansible_user_id}/.vim
+- name: Install Dotfiles
+      git: >
+         repo=git@github.com/beberlei/vim-dotfiles.git
+         dest=/home/${ansible_user_id}/.vim
