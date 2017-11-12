@@ -14,6 +14,7 @@
 
 - name: "install using apt"
   hosts: localhost
+  sudo: yes
   tasks:
    - apt: name={{ item }} state=present
      with_items:
@@ -29,6 +30,8 @@
 
 
 - name: Install Dotfiles
-      git: >
+  hosts: localhost
+  tasks:
+    - git: >
          repo=git@github.com/beberlei/vim-dotfiles.git
          dest=/home/${ansible_user_id}/.vim
