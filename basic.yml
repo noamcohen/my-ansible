@@ -2,36 +2,83 @@
  
  # ansible playbook to install my dev machine
 
-- name: "install external apps"
-  hosts: localhost
-  sudo: yes
-  roles:
-     - { role: theNewFlesh.sublime }
-     - { role: henriklynggaard.clion }
-     - { role: gantsign.gitkraken }
-     
-
-
 - name: "install using apt"
   hosts: localhost
   sudo: yes
   tasks:
    - apt: name={{ item }} state=present
      with_items:
+       #- clang 
+       - arcanist
+       - autoconf
+       - autogen
+       - build-essential
+       - cgdb
+       - cmake
        - curl
-       - gcc
+       - htop
+       - iftop
+       - libc++-dev
+       - libgflags-dev
+       - libgtest-dev
+       - libtool
+       - kcachegrind
+       - pip
        - python-apport
        - python-lockfile
        - python-requests
        - ubuntu-restricted-extras
-       - cgdb
-       - iftop
-       - htop
+       - vagrant
+       - valgrind
+       - pass
+       
 
 
-- name: Install Dotfiles
+
+# - name: Clone grpc
+#   hosts: localhost
+#   sudo: yes
+#   tasks:
+#     - git:
+#         repo: https://github.com/grpc/grpc
+#         dest: "{{ grpc_work_dir }}"
+#         depth: 50
+#         version: v{{ grpc_version }}
+
+#   - command: chdir={{ grpc_work_dir }} {{ item }}
+#   with_items:
+#     - git submodule update --init
+#     - make CXXFLAGS="-Wno-implicit-fallthrough" CFLAGS="-Wno-implicit-fallthrough" -j8
+#     - make install
+#     - ldconfig
+#   no_log: true
+
+
+
+#- name: Install Dotfiles
+#  hosts: localhost
+#  tasks:
+#    - git: >
+#         repo=git@github.com/beberlei/vim-dotfiles.git
+#         dest=/home/${ansible_user_id}/.vim
+
+- name: "install my favorite apps"
   hosts: localhost
-  tasks:
-    - git: >
-         repo=git@github.com/beberlei/vim-dotfiles.git
-         dest=/home/${ansible_user_id}/.vim
+  sudo: yes
+  roles:
+     - { role: theNewFlesh.sublime } # OK
+     - { role: henriklynggaard.clion } # FAIL
+ #    - { role: gantsign.gitkraken } # failed on timeout
+     - { role: wtanaka.slack } # OK
+     - { role: wtanaka.chrome } # OK
+  
+- name: install backintime # FAIL
+  vars:
+    backintime_profiles:
+     - include:
+         - /var/www
+         - ~/w
+       path: /mnt/external/backup-directory
+  roles:
+    - { role: igor_mukhin.backintime, tags: backup }
+...
