@@ -31,7 +31,7 @@
        - vagrant
        - valgrind
        - pass
-       
+       - docker.io
 
 
 
@@ -72,13 +72,13 @@
      - { role: wtanaka.slack } # OK
      - { role: wtanaka.chrome } # OK
   
-- name: install backintime # FAIL
-  vars:
-    backintime_profiles:
-     - include:
-         - /var/www
-         - ~/w
-       path: /mnt/external/backup-directory
-  roles:
-    - { role: igor_mukhin.backintime, tags: backup }
+# - name: install backintime # FAIL
+#   vars:
+#     backintime_profiles:
+#      - include:
+#          - /var/www
+#          - ~/w
+#        path: /mnt/external/backup-directory
+#   roles:
+#     - { role: igor_mukhin.backintime, tags: backup }
 ...
