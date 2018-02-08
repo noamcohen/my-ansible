@@ -32,6 +32,8 @@
        - valgrind
        - pass
        - docker.io
+       - terraform
+       - terragrunt
 
 
 
